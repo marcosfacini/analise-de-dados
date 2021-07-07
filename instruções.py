@@ -81,5 +81,5 @@ classificacao = rndforest.predict(dados.drop('target', axis=1))
 dados['probabilidade'] = probabilidade
 dados['classificacao'] = classificacao
 
-# por padrão a probabilidade acima de 0.5 recebe como classificao o 1 e abaixo de 0.5 como 0
+# por padrão a probabilidade acima de 0.5 recebe como classifição o 1 e abaixo de 0.5 como 0
 print (dados)
