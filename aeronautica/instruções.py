@@ -89,6 +89,42 @@ schema.validate(df)
 # df.loc[df.ocorrencia_uf == 'SP', ['ocorrencia_classificacao']] = 'GRAVE'
 # print (df.loc[df.ocorrencia_uf == 'SP'])
 
+# mudando aonde aparece os 4 asteristicos na coluna ocorrencia_aerodromo para o valor NA (not avaliable)
+# df.loc[df.ocorrencia_aerodromo == '****', ['ocorrencia_aerodromo']] = pd.NA
+
+# fazendo todas as alterações de campos inválidos por N/A de uma só vez
+# df.replace(['**','###!','####','****','*****','NULL'], pd.NA, inplace=True)
+
+# somando quantos dados NA (not avaliable) tem por coluna
+# df.isna().sum()
+
+# isnull() faz uma função similar ao isna() mostrando a soma dos campos com dados vazios
+# df.isnull().sum()
+
+# substituindo todos os campos NA pelo numero 10
+# df.fillna(10, inplace=True)
+
+# substituir todos os campos aonde aparece o numero 10 pelo NA
+# df.replace([10], pd.NA, inplace=True)
+# o problema é que nesse caso, acabou alterando os valores da coluna total_recomendacoes que já possuiam o valor 10
+# para resolver pode-se alterar novamente só os dados dessa coluna, voltando para o valor padrão
+# df.fillna(value={'total_recomendacoes':10}, inplace=True)
+
+# criando uma coluna de backup para poder fazer alterações na coluna original sem se preocupar
+# df['total_recomendacoes_bkp'] = df.total_recomendacoes
+# depois que ver que as alterações deram certo, pode-se excluir a coluna de backup com a função drop()
+# porem a função drop() por padrão apaga linhas com o parametro axis(eixo) setado no 0 
+# axis=0 representa linha e axis=1 representa coluna
+# df.drop(['total_recomendacoes_bkp'], axis=1, inplace=True)
+
+# função dropna() exclui todas as linhas em que houver campos NA
+# df.dropna()
+# deve-se ter cuidado, porque não se exclui apenas o campo que é NA, mas a linha inteira a qual ele pertence
+# pide-se escolher de qual coluna vai ser excluida a linha com o parametro subset=
+# df.dropna(subset=['ocorrencia_uf'])
+
+# excluir linhas duplicadas
+# df.drop_duplicates(inplace=True)
 
 
 
