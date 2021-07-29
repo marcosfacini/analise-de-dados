@@ -9,7 +9,10 @@ from pandera.checks import Check
 # op parametro sep=# altera a separação das colunas para ponto e virgula
 # parametro parse_dates transforma a coluna ocorrencia_dia que era string em um formato de data para poder ser manipulado como data
 # parametro dayfirts=True faz com que na coluna de data o primeiro valor seja o dia para manter o padrão brasileiro
-df = pd.read_csv('aeronautica\ocorrencia_2010_2020.csv', sep=';', parse_dates=['ocorrencia_dia'], dayfirst=True)
+# parametro na_values transforma todos os dados da variavel valores_ausentes em N/A/N (not a numeric) que tem basicamente o mesmo objetivo do N/A (not avaliable)
+valores_ausentes = ['**','###!','####','****','*****','NULL']
+df = pd.read_csv("aeronautica\ocorrencia_2010_2020.csv", sep=";", parse_dates=['ocorrencia_dia'], dayfirst=True, na_values=valores_ausentes)
+
 
 # fazendo a validação do dataframe atraves de um esquema para tratar possiveis erros
 schema = pa.DataFrameSchema(
@@ -18,8 +21,8 @@ schema = pa.DataFrameSchema(
         'codigo_ocorrencia2': pa.Column(pa.Int),
         'ocorrencia_classificacao': pa.Column(pa.String),
         'ocorrencia_cidade': pa.Column(pa.String),
-        'ocorrencia_uf': pa.Column(pa.String, pa.Check.str_length(2,2)), # aceita o maximo e o minimo de 2 caracteres
-        'ocorrencia_aerodromo': pa.Column(pa.String),
+        'ocorrencia_uf': pa.Column(pa.String, pa.Check.str_length(2,2), nullable=True), # aceita o maximo e o minimo de 2 caracteres
+        'ocorrencia_aerodromo': pa.Column(pa.String, nullable=True),
         'ocorrencia_dia': pa.Column(pa.DateTime), # dá erro se for colocada uma data inválida
         'ocorrencia_hora': pa.Column(pa.String, pa.Check.str_matches(r'^([0-1]?[0-9]|[2][0-3]):([0-5][0-9])(:[0-5][0-9])?$'), nullable=True), #Chek usa uma expressão regular para aceitar somente horas no padrão de 24 horas
         'total_recomendacoes': pa.Column(pa.Int)       # parametro nullable=True permite colunas vazias sem dar erro
@@ -60,6 +63,12 @@ schema.validate(df)
 
 # mostrar coluna inteira
 # df.loc[:,'ocorrencia_cidade']
+# ou simplesmente:
+# df['ocorrencia_cidade']
+
+# localizar por indice com o iloc
+# mostrando o ultima linha da tabela
+# df.iloc[-1]
 
 # verificando se existe duplicidade nos valores da coluna
 # df.codigo_ocorrencia.is_unique
@@ -101,6 +110,13 @@ schema.validate(df)
 # isnull() faz uma função similar ao isna() mostrando a soma dos campos com dados vazios
 # df.isnull().sum()
 
+# filtrar somente os campos nulos da coluna ocorrencia_uf
+# filtro = df.ocorrencia_uf.isnull()
+# df.loc[filtro]
+
+# função count() por padrão não contabiliza campos nulos
+# df.count()
+
 # substituindo todos os campos NA pelo numero 10
 # df.fillna(10, inplace=True)
 
@@ -125,6 +141,8 @@ schema.validate(df)
 
 # excluir linhas duplicadas
 # df.drop_duplicates(inplace=True)
+
+# in 20
 
 
 
