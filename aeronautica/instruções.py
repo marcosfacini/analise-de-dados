@@ -142,7 +142,71 @@ schema.validate(df)
 # excluir linhas duplicadas
 # df.drop_duplicates(inplace=True)
 
-# in 20
+# filtro de ocorrências com mais de 10 recomendações
+# filtro = df.total_recomendacoes > 10
+# df.loc[filtro]
+
+# # filtro que mostra somente duas colunas das linhas em que existem corrências com mais de 10 recomendações
+# filtro = df.total_recomendacoes > 10
+# df.loc[filtro, ['ocorrencia_cidade', 'total_recomendacoes']]
+
+#ocorrências cuja classificação == INCIDENTE GRAVE	
+# filtro = df.ocorrencia_classificacao == 'INCIDENTE GRAVE'
+# df.loc[filtro]
+
+#ocorrências cuja classificação == INCIDENTE GRAVE e o estado == SP
+# filtro1 = df.ocorrencia_classificacao == 'INCIDENTE GRAVE'
+# filtro2 = df.ocorrencia_uf == 'SP'
+# df.loc[filtro1 & filtro2]
+
+#ocorrências cuja classificação == INCIDENTE GRAVE ou o estado == SP
+# filtro1 = df.ocorrencia_classificacao == 'INCIDENTE GRAVE'
+# filtro2 = df.ocorrencia_uf == 'SP'
+# df.loc[filtro1 | filtro2]
+
+#ocorrências cuja (classificação == INCIDENTE GRAVE ou classificação == INCIDENTE) e o estado == SP
+# filtro1 = df.ocorrencia_classificacao.isin(['INCIDENTE GRAVE', 'INCIDENTE'])
+# filtro2 = df.ocorrencia_uf == 'SP'
+# df.loc[filtro1 & filtro2]
+
+#ocorrências cuja cidade comecem com a letra C
+# filtro = df.ocorrencia_cidade.str[0] == 'C'
+# df.loc[filtro]
+
+#ocorrências cuja cidade terminam com a letra A
+# filtro = df.ocorrencia_cidade.str[-1] == 'A'
+# df.loc[filtro]
+
+#ocorrências cuja cidade terminam com os caracteres MA
+# filtro = df.ocorrencia_cidade.str[-2:] == 'MA'
+# df.loc[filtro]
+
+#ocorrências cuja cidade contém (em qualquer parte do conteúdo) os caracteres MA ou AL
+# filtro = df.ocorrencia_cidade.str.contains('MA|AL')
+# df.loc[filtro]
+
+#ocorrências do ano de 2015
+# filtro = df.ocorrencia_dia.dt.year == 2015
+# df.loc[filtro]
+
+#ocorrências do ano de 2015 e mês 12 e dias entre 3 e 8
+# filtro_ano = df.ocorrencia_dia.dt.year == 2015
+# filtro_mes = df.ocorrencia_dia.dt.month == 12
+# filtro_dia_inicio = df.ocorrencia_dia.dt.day > 2 
+# filtro_dia_fim = df.ocorrencia_dia.dt.day < 9
+# df.loc[filtro_ano & filtro_mes & filtro_dia_inicio & filtro_dia_fim]
+
+# criando uma coluna nova que vai unir as colunas ocorrencia_dia com a coluna ocorrencia_hora
+# primeiro usar o metodo astype(str) para transformar a coluna ocorrencia_dia para o formato string para poder concatenar com a coluna ocorrencia_hora que já está no formato string
+# depois usar a função pd.to_datetime() do pandas para transformar tudo no formato datetime
+# df['ocorrencia_dia_hora'] = pd.to_datetime(df.ocorrencia_dia.astype(str) + ' '  + df.ocorrencia_hora)
+
+# filtro por dia e hora
+# filtro1 = df.ocorrencia_dia_hora >= '2015-12-03 11:00:00'
+# filtro2 = df.ocorrencia_dia_hora <= '2015-12-08 14:30:00'
+# df.loc[filtro1 & filtro2]
+
+# in 38
 
 
 
