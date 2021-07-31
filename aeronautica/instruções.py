@@ -206,7 +206,60 @@ schema.validate(df)
 # filtro2 = df.ocorrencia_dia_hora <= '2015-12-08 14:30:00'
 # df.loc[filtro1 & filtro2]
 
-# in 38
+# filtrando ocorrências do ano de 2015 e mês 03 e criando um novo dataframe chamado df201503 que vai receber esse filtro
+# filtro1 = df.ocorrencia_dia.dt.year == 2015
+# filtro2 = df.ocorrencia_dia.dt.month == 3
+# df201503 = df.loc[filtro1 & filtro2]
+
+# agrupando dados e contando
+# df201503.groupby(['ocorrencia_classificacao']).size()
+# agrupando dados e contando de forma crecsente
+# df201503.groupby(['ocorrencia_classificacao']).size().sort_values()
+# agrupando dados e contando de forma decrescente
+# df201503.groupby(['ocorrencia_classificacao']).size().sort_values(ascending=False)
+
+# criando um nov dataframe
+# filtro1 = df.ocorrencia_dia.dt.year == 2010
+# filtro2 = df.ocorrencia_uf.isin(['SP','MG','ES','RJ'])
+# dfsudeste2010 = df.loc[filtro1 & filtro2]
+# dfsudeste2010
+
+# agrupar e contar por classificação
+# dfsudeste2010.groupby(['ocorrencia_classificacao']).size()
+# agrupar e contar cada classificação por Estado/uf
+# dfsudeste2010.groupby(['ocorrencia_uf', 'ocorrencia_classificacao']).size()
+# agrupar e contar por cidade
+# dfsudeste2010.groupby(['ocorrencia_cidade']).size().sort_values(ascending=False)
+
+# total de recomendações do rio de janeiro
+# filtro1 = dfsudeste2010.ocorrencia_cidade == 'RIO DE JANEIRO'
+# filtro2 = dfsudeste2010.total_recomendacoes > 0
+# dfsudeste2010.loc[filtro1 & filtro2]
+
+# filtro = dfsudeste2010.ocorrencia_cidade == 'RIO DE JANEIRO'
+# dfsudeste2010.loc[filtro].total_recomendacoes.sum()
+
+# total de recomendações por aerodromo, e também mostrando todos os campos N/A 
+# dfsudeste2010.groupby(['ocorrencia_aerodromo'], dropna=False).total_recomendacoes.sum()
+
+# agrupar totao de recomendações por cidade
+# dfsudeste2010.groupby(['ocorrencia_cidade']).total_recomendacoes.sum()
+# melhorando com um filtro que exclui as cidades sem recomendacoes (campo com 0 recomendações)
+# filtro = dfsudeste2010.total_recomendacoes > 0
+# dfsudeste2010.loc[filtro].groupby(['ocorrencia_cidade']).total_recomendacoes.sum().sort_values()
+# filtrando total de recomendações por cidade e por mes
+# dfsudeste2010.loc[filtro].groupby(['ocorrencia_cidade', dfsudeste2010.ocorrencia_dia.dt.month]).total_recomendacoes.sum()
+
+# filtrando total de recomendações da cidade de são paulo
+# filtro1 = dfsudeste2010.total_recomendacoes > 0
+# filtro2 = dfsudeste2010.ocorrencia_cidade == 'SÃO PAULO'
+# dfsudeste2010.loc[filtro1 & filtro2]
+
+
+
+
+
+
 
 
 
